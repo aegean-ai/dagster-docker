@@ -3,6 +3,7 @@ from dagster_aws.s3 import S3PickleIOManager, S3Resource
 
 
 from . import assets
+from . import jobs
 
 S3_IO_MANAGER_CONFIG = {
     "s3_bucket": {"env": "DAGSTER_S3_BUCKET"},
@@ -17,6 +18,7 @@ all_assets = load_assets_from_modules([assets])
 
 defs = Definitions(
     assets=all_assets,
+    jobs = [jobs.my_pipeline, jobs.my_job, jobs.my_step_isolated_job],
     resources={
         "io_manager": S3PickleIOManager(
             s3_resource=S3Resource(

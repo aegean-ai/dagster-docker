@@ -40,15 +40,9 @@ ENV PATH="/home/vscode/.local/bin:$PATH"
 RUN pip install --upgrade pip && \
     pip install pipenv  && \
     pipenv lock && \
-    pipenv install  --system --ignore-pipfile && \
+    pipenv install  --system --ignore-pipfile && \ 
+    # --deploy can be added to pipenv install for production
     pipenv --clear
-
-# #------------------------------------------------------------------------------------------------------
-# FROM base as development 
-
-# RUN pipenv install --dev  && \ 
-#     pipenv --clear
-
 
 # Run dagster gRPC server on port 4000
 EXPOSE 4000
@@ -56,17 +50,3 @@ EXPOSE 4000
 # CMD allows this to be overridden from run launchers or executors that want
 # to run other commands against your repository
 CMD ["dagster", "api", "grpc", "-h", "0.0.0.0", "-p", "4000", "-m", "dagster_module"]
-
-# #------------------------------------------------------------------------------------------------------
-# FROM base as production 
-
-# RUN pipenv install  --deploy && \ 
-#     pipenv --clear
-
-# # Run dagster gRPC server on port 4000
-# EXPOSE 4000
-
-# # CMD allows this to be overridden from run launchers or executors that want
-# # to run other commands against your repository
-# #CMD ["dagster", "api", "grpc", "-h", "0.0.0.0", "-p", "4000", "-f", "repositories.py"]
-# CMD ["dagster", "api", "grpc", "-h", "0.0.0.0", "-p", "4000", "-m", "dagster_module"]
